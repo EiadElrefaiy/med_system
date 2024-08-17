@@ -17,8 +17,8 @@ use App\Http\Controllers\HomeController;
 
 Auth::routes();
 
-Route::get('/', [HomeController::class, 'root'])->name('root');
-//Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+Route::middleware(['auth'])->group(function () {
+  Route::get('/', [HomeController::class, 'root'])->name('root');
 
   Route::get('index', [App\Http\Controllers\CRUD\ReadController::class, 'index'])->name('table.index');
 
@@ -31,3 +31,4 @@ Route::get('/', [HomeController::class, 'root'])->name('root');
   Route::post('update', [App\Http\Controllers\CRUD\UpdateController::class, 'update'])->name('update');
 
   Route::post('delete', [App\Http\Controllers\CRUD\DeleteController::class, 'delete'])->name('delete');
+});
