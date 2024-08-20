@@ -52,6 +52,7 @@
     
                     <form action="{{ isset($data) ? route('update') : route('create') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                    
                         @if(array_key_exists('personal_photo', $columns))
                             <div class="mb-3 row">
                                 <label for="profile_picture" class="col-md-2 col-form-label">{{ $columns['personal_photo']['label'] }}</label>
@@ -81,46 +82,54 @@
                             @endphp
                         
                             <input type="hidden" name="table" value="{{ $table }}">
+                            
                             @if(isset($data))
-                            <input type="hidden" name="id" value="{{ $data->id}}">
+                            <input type="hidden" 
+                            name="{{ $table === 'users' ? 'user_id' : 'id' }}"  value="{{ $table === 'users' ? $data->user_id : $data->id }}">
                             @endif
-
-                            @foreach($chunks as $chunk)
-                                <div class="row mb-3">
+                    
+                             @foreach($chunks as $chunk)
                                     @foreach($chunk as $column => $details)
-                                        <div class="col-md-4">
-                                            <div class="mb-3">
-                                                <label for="{{ $column }}" class="form-label">{{ $details['label'] }}</label>
-                                                @if($details['type'] === 'select')
-                                                    <select class="form-select" name="{{ $column }}" id="{{ $column }}">
-                                                        @foreach($details['options'] as $option)
-                                                            <option value="{{ $option['value'] }}" {{ isset($data->$column) && $data->$column == $option['value'] ? 'selected' : '' }}>
-                                                                {{ $option['label'] }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                @elseif($details['type'] === 'file')
-                                                    <input class="form-control" type="file" name="{{ $column }}" id="{{ $column }}">
-                                                @elseif($details['type'] === 'date')
-                                                    <input class="form-control" type="date" name="{{ $column }}" id="{{ $column }}" value="{{ isset($data) ? \Carbon\Carbon::parse($data->$column)->format('Y-m-d') : '' }}">
-                                                @elseif($details['type'] === 'email')
-                                                    <input class="form-control" type="email" name="{{ $column }}" id="{{ $column }}" placeholder="Enter {{ $details['label'] }}" value="{{ isset($data) ? $data->$column : '' }}">
-                                                @else
-                                                    <input class="form-control" type="{{ $details['type'] }}" name="{{ $column }}" id="{{ $column }}" placeholder="Enter {{ $details['label'] }}" value="{{ isset($data) ? $data->$column : '' }}">
-                                                @endif
+                                            <div class="col-md-3" style="display: {{ $details['hidden'] ? 'none' : 'block' }};">
+                                                <div class="mb-3">
+                                                    <label for="{{ $column }}" class="form-label">{{ $details['label'] }}</label>
+                                                    @if($details['type'] === 'select')
+                                                        <select class="form-select" name="{{ $column }}" id="{{ $column }}">
+                                                            @foreach($details['options'] as $option)
+                                                                <option value="{{ $option['value'] }}" 
+                                                                    {{ (isset($data->$column) && $data->$column == $option['value']) || (empty($data->$column) && $details['default'] == $option['value']) ? 'selected' : '' }}>
+                                                                    {{ $option['label'] }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    @elseif($details['type'] === 'file')
+                                                        <input class="form-control" type="file" name="{{ $column }}" id="{{ $column }}">
+                                                    @elseif($details['type'] === 'date')
+                                                        <input class="form-control" type="date" name="{{ $column }}" id="{{ $column }}" 
+                                                               value="{{ isset($data) ? \Carbon\Carbon::parse($data->$column)->format('Y-m-d') : $details['default'] }}">
+                                                    @elseif($details['type'] === 'email')
+                                                        <input class="form-control" type="email" name="{{ $column }}" id="{{ $column }}" 
+                                                               placeholder="Enter {{ $details['label'] }}" value="{{ isset($data) ? $data->$column : $details['default'] }}">
+                                                    @elseif($details['type'] === 'password')
+                                                        <input class="form-control" type="password" name="{{ $column }}" id="{{ $column }}" 
+                                                               placeholder="Enter {{ $details['label'] }}">
+                                                    @else
+                                                        <input class="form-control" type="{{ $details['type'] }}" name="{{ $column }}" id="{{ $column }}" 
+                                                               placeholder="Enter {{ $details['label'] }}" value="{{ isset($data) ? $data->$column : $details['default'] }}">
+                                                    @endif
+                                                </div>
                                             </div>
-                                        </div>
                                     @endforeach
-                                </div>
                             @endforeach
                         </div>
+                        
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary">Save</button>
                             </div>
                         </div>
                     </form>
-                                                                                                        
+                                                                                                                            
                 </div>
             </div>
         </div>

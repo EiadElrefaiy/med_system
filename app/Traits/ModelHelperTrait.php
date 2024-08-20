@@ -38,6 +38,8 @@ trait ModelHelperTrait
         $relationships = [
             Setting::class => ['employees'],
             Employee::class => ['settings'],
+            User::class => ['employees'],
+            Employee::class => ['user'],
             // Add other relationships here
         ];
 

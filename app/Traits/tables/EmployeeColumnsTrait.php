@@ -24,6 +24,7 @@ trait EmployeeColumnsTrait
         $employment_place = $this->EmploymentPlace()->select('id_setting as value', 'title_setting as label')->get()->toArray();
         $way_recived_salary = $this->WayRecivedSalary()->select('id_setting as value', 'title_setting as label')->get()->toArray();
         $branches = $this->Branches()->select('id as value', 'title as label')->get()->toArray();
+        
 
         return [
             'employee' => ['label' => 'Name', 'type' => 'text'],

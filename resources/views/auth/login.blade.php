@@ -26,56 +26,38 @@
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
                                     <div class="mb-3">
-                                        <label class="form-label" for="email">Email <span class="text-danger">*
-                                            </span></label>
-                                        <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                            name="email" id="email" value="admin@themesdesign.com" required
-                                            autocomplete="email" autofocus placeholder="Enter email">
-                                        @error('email')
+                                        <label class="form-label" for="user_username">Username <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control @error('user_username') is-invalid @enderror"
+                                               name="user_username" id="user_username" required
+                                               autocomplete="user_username" autofocus placeholder="Enter username">
+                                        @error('user_username')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-
+                                
                                     <div class="mb-3">
-                                        <label class="form-label" for="userpassword">Password <span class="text-danger">*
-                                            </span></label>
-                                        <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                            id="userpassword" name="password" required value="12345678"
-                                            autocomplete="current-password" placeholder="Enter password">
-                                        @error('password')
+                                        <label class="form-label" for="user_pass">Password <span class="text-danger">*</span></label>
+                                        <input type="password" class="form-control @error('user_pass') is-invalid @enderror"
+                                               id="user_pass" name="user_pass" required
+                                               autocomplete="current-password" placeholder="Enter password">
+                                        @error('user_pass')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customControlInline"
-                                            name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="customControlInline">Remember
-                                            me</label>
-                                    </div>
-
+                                
                                     <div class="mt-3">
-                                        <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Log
-                                            In</button>
+                                        <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>
                                     </div>
-
-                                    @if (Route::has('password.request'))
-                                        <div class="mt-4 text-center">
-                                            <a href="{{ route('password.request') }}" class="text-muted"><i
-                                                    class="mdi mdi-lock me-1"></i> Forgot your password?</a>
-                                        </div>
-                                    @endif
                                 </form>
                             </div>
-
                         </div>
                     </div>
                     <div class="mt-5 text-center">
-                        <p>Don't have an account ? <a href="{{ route('register') }}" class="fw-medium text-primary"> Signup
+                        <p>Don't have an account ? <a href="#" class="fw-medium text-primary"> Signup
                                 now </a> </p>
                         <p>©
                             {{ date('Y') }} Qovex. Crafted with <i class="mdi mdi-heart text-danger"></i> by

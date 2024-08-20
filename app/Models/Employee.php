@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Employee extends Model
 {
     use HasFactory;
+
     protected $table = 'employees';
+
     protected $fillable = [
         'employee',
         'name_as_card',
@@ -40,8 +41,9 @@ class Employee extends Model
         'employee_type',
     ];
 
-    public function settings() {
-        return $this->belongsTo(Setting::class , 'id_setting');
-   }
-
+    // Define the inverse relationship with User
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'emp_code', 'emp_code');
+    }
 }

@@ -13,11 +13,12 @@ use App\Traits\ModelHelperTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use App\Traits\Tables\EmployeeColumnsTrait;
+use App\Traits\Tables\UserColumnsTrait;
 use App\Traits\Validation\ValidationTrait;
 
 class CreateController extends Controller
 {
-    use ModelHelperTrait , EmployeeColumnsTrait , ValidationTrait;
+    use ModelHelperTrait , EmployeeColumnsTrait , UserColumnsTrait , ValidationTrait;
 
     public function add(Request $request)
     {
@@ -28,10 +29,15 @@ class CreateController extends Controller
             case 'employees':
                 $columns = $this->getEmployeeColumns();
                 break;
+        
+            case 'users':
+                $columns = $this->getUserColumns();
+                break;
+        
             default:
                 abort(404, 'Table not found');
         }
-
+        
         return view('create.create', compact('columns' , 'table'));
     }
 
@@ -64,6 +70,10 @@ class CreateController extends Controller
             $requestData['password'] = Hash::make($requestData['password']);
         }
 
+        if (isset($requestData['user_pass'])) {
+            $requestData['user_pass'] = Hash::make($requestData['user_pass']);
+        }
+
         if ($request->hasFile('personal_photo')) {
             // Generate a unique filename based on current time and file extension
             $fileName = time() . '.' . $request->file('personal_photo')->extension();
@@ -94,9 +104,11 @@ class CreateController extends Controller
         unset($requestData['_token']);
 
         $record = DB::table($table)->insert($requestData);
+        /*
         $lastInsertedId = DB::getPdo()->lastInsertId();
         $data = DB::table($table)->find($lastInsertedId);
-
+        */
+        
         return redirect()->back()->with('success', 'Record created successfully!');
     }
 

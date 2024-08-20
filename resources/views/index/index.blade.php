@@ -19,7 +19,7 @@
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <a href="{{ route('add', ['table' => $table , 'view' => 'create.create']) }}" class="btn btn-success waves-effect waves-light"><i class="mdi mdi-account-plus"></i> &nbsp;Add Employee</a>
+                        <a href="{{ route('add', ['table' => $table , 'view' => 'create.create']) }}" class="btn btn-success waves-effect waves-light"><i class="mdi mdi-account-plus"></i> &nbsp;Add New</a>
                     </ol>
                 </div>
 
@@ -45,43 +45,85 @@
                         </thead>
                         
                         <tbody>
-                            @foreach ($data as $item)
-                            <tr>
-                                @foreach($columns as $key => $value)
-                                    @if($key === 'employee_type')
+                            @foreach ($data as $row)
+                                <tr>
+                                    @foreach($columns as $key => $label)
+
+                                    @php
+
+                                    // Fetch employee by emp_code value
+                                    $employee = \App\Models\Employee::where('id', $row['emp_code'])->first();
+                                    // dd($employee->personal_photo);
+
+                                    @endphp 
+
+                                        @if($key === 'employee_type')
+                                            <td class="align-middle">
+                                                @if($row['employee_type'] == 1)
+                                                    <span class="badge badge-soft-success font-size-12">Active</span>
+                                                @else
+                                                    <span class="badge badge-soft-danger font-size-12">Not Active</span>
+                                                @endif
+                                            </td>
+                        
+                                        @elseif($key === 'personal_photo')
+                                            <td class="align-middle">
+                                                @if(isset($row['personal_photo']))
+                                                    <img src="{{ asset($row['personal_photo']) }}" alt="Personal Photo" class="rounded-circle" width="60" height="60">
+                                                @else
+                                                    <img src="{{ asset('build/images/users/user2.jpg') }}" alt="No Image" class="rounded-circle" width="60" height="60">
+                                                @endif
+                                            </td>
+
+                        
+                                        @elseif($table == 'users' && $key === 'user_photo')
+
                                         <td class="align-middle">
-                                            @if($item['employee_type'] == 1)
-                                                <span class="badge badge-soft-success font-size-12">Active</span>
-                                            @else
-                                                <span class="badge badge-soft-danger font-size-12">Not Active</span>
-                                            @endif
-                                        </td>
-                                    @elseif($key === 'personal_photo')
-                                        <td class="align-middle">
-                                            @if(isset($item['personal_photo']))
-                                                <img src="{{ asset($item['personal_photo']) }}" alt="Personal Photo" class="rounded-circle" width="60" height="60">
+                                            @if(isset($employee->personal_photo))
+                                                <img src="{{ asset($employee->personal_photo) }}" alt="Personal Photo" class="rounded-circle" width="60" height="60">
                                             @else
                                                 <img src="{{ asset('build/images/users/user2.jpg') }}" alt="No Image" class="rounded-circle" width="60" height="60">
                                             @endif
                                         </td>
-                                    @else
-                                        <td class="align-middle">{{ $item[$key] ?? '' }}</td>
-                                    @endif
-                                @endforeach
-                                <td class="align-middle">
 
-                                    <a href="{{ route('edit', ['table' => $table , 'view' => 'create.create' , 'id' => $item->id]) }}" class="btn btn-outline-secondary btn-sm edit" title="Edit">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
+                                        
+                                        @elseif($table == 'users' && $label === 'Employee')
 
-                                    <a href="javascript:void(0);" class="btn btn-outline-secondary btn-sm delete" data-id="{{ $item->id }}" title="Delete">
+                                            <td class="align-middle">{{ $employee->employee ?? 'No employee found' }}</td>
+
+                                        @elseif($key === 'role_id_fk')
+                                            <td class="align-middle">
+                                                @isset($row[$key])
+                                                    @if($row[$key] == 1)
+                                                        admin
+                                                    @elseif($row[$key] == 2)
+                                                        manager
+                                                    @else
+                                                        employee
+                                                    @endif
+                                                @else
+                                                    {{-- Handle cases where $row[$key] is not set --}}
+                                                @endisset
+                                            </td>
+                                        @else
+                                            <td class="align-middle">{{ $row[$key] ?? '' }}</td>
+                                        @endif
+                        
+                                    @endforeach
+                                    <td class="align-middle">
+                                        <a href="{{ route('edit', ['table' => $table , 'view' => 'create.create' , 'id' => $table == 'users' ? $row['user_id'] : $row['id']]) }}" class="btn btn-outline-secondary btn-sm edit" title="Edit">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+                        
+                                        <a href="javascript:void(0);" class="btn btn-outline-secondary btn-sm delete" 
+                                        data-id="{{ $table == 'users' ? $row['user_id'] : $row['id'] }}" title="Delete">
                                         <i class="fas fa-trash-alt"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                                        </a>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
-                      
+                                              
                     </table>
                 </div>
             </div>

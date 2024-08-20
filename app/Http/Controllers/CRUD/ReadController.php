@@ -37,7 +37,8 @@ class ReadController extends Controller
     
             // Decode the 'columns' parameter to get the key-value pairs
             $columns = json_decode($request->columns, true);
-    
+              
+            // dd($data);
             // Return success response with the view, data, and columns
             return view($view, compact('data', 'columns' , 'table'));
         } else {

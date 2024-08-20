@@ -60,4 +60,11 @@ trait generalSettings
         $branches = $modelClass::select('id' , 'title');
         return $branches;
     }
+
+    public function Employees()
+    {
+        $modelClass = $this->getModelClass('employees');
+        $employees = $modelClass::select('id' , 'employee');
+        return $employees;
+    }
 }

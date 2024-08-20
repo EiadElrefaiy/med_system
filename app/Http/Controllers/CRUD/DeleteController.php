@@ -23,8 +23,14 @@ class DeleteController extends Controller
             return response()->json(['error' => 'Model not found'], 404);
         }
     
+        if($table == 'users'){
+        // Get the record from the database using user_id as the primary key
+        $record = $modelClass::where('user_id', $request->id)->first();
+        }else{
         // Get the record from the database
         $record = $modelClass::find($request->id);
+        }
+        
     
         if (!$record) {
             return response()->json(['error' => 'Record not found'], 404);

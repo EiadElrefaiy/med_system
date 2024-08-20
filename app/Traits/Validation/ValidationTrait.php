@@ -29,7 +29,7 @@ trait ValidationTrait
             ];
         }
     
-        if ($request->has('emp_code')) {
+        if ($request->has('emp_code') && $table == 'employees') {
             $rules['emp_code'] = [
                 'required', 
                 'string', 

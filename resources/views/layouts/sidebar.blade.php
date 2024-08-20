@@ -21,7 +21,7 @@
             <!-- Left Menu Start -->
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li>
-                    <a href="javascript: void(0);" class="waves-effect">
+                    <a href="{{ route('table.index', ['table' => 'users', 'view' => 'index.index', 'columns' => json_encode(['user_id' => 'id' ,'user_photo' => 'profile_pic', 'user_name' => 'Name', 'emp_code' => 'Employee', 'user_phone' => 'Mobile' , 'role_id_fk' => 'role'])]) }}" class="waves-effect">
                         <i class="mdi mdi-account"></i>
                         <span>Users</span>
                     </a>
@@ -65,7 +65,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript: void(0);" class="waves-effect">
+                    <a href="{{ route('table.index', ['table' => 'employees', 'view' => 'index.index', 'columns' => json_encode(['id' => 'id', 'personal_photo' => 'profile pic' , 'employee' => 'Name', 'emp_code' => 'Employee Code', 'phone' => 'Mobile' , 'card_num' => 'Card Number' , 'birth_date' => 'Birth Date' , 'adress' => 'Address' , 'employee_type' => 'Status'])]) }}" class="waves-effect">
                         <i class="mdi mdi-airplay"></i>
                         <span>Projects</span>
                     </a>

@@ -12,11 +12,12 @@ use App\Traits\ModelHelperTrait;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use App\Traits\Tables\EmployeeColumnsTrait;
+use App\Traits\Tables\UserColumnsTrait;
 use App\Traits\Validation\ValidationTrait;
 
 class UpdateController extends Controller
 {
-    use ModelHelperTrait , EmployeeColumnsTrait , ValidationTrait;
+    use ModelHelperTrait , EmployeeColumnsTrait , UserColumnsTrait , ValidationTrait;
 
     public function edit(Request $request)
     {
@@ -30,10 +31,15 @@ class UpdateController extends Controller
             case 'employees':
                 $columns = $this->getEmployeeColumns();
                 break;
+        
+            case 'users':
+                $columns = $this->getUserColumns();
+                break;
+        
             default:
                 abort(404, 'Table not found');
         }
-
+        
 
         // Determine the model class based on the table name
         $modelClass = $this->getModelClass($table);
@@ -53,10 +59,13 @@ class UpdateController extends Controller
     public function update(Request $request)
     {
         $table = $request->table;
-        $id = $request->id;
+        
+        $column_name = $table =='users' ? 'user_id' : 'user';
+
+        $id =  $table =='users' ? $request->user_id : $request->user_id;
         
         // Ensure $id is valid and exists
-        if (is_null($id) || !DB::table($table)->where('id', $id)->exists()) {
+        if (is_null($id) || !DB::table($table)->where($column_name, $id)->exists()) {
             return response()->json(['message' => 'Record not found'], 404);
         }
     
@@ -74,11 +83,7 @@ class UpdateController extends Controller
     
         // Proceed with the update logic
         $requestData = $request->except(['_token', 'password_confirmation', 'table']);
-    
-        if (isset($requestData['password'])) {
-            $requestData['password'] = Hash::make($requestData['password']);
-        }
-    
+        
         if ($request->hasFile('personal_photo')) {
             $fileName = time() . '.' . $request->file('personal_photo')->extension();
             $destinationPath = public_path('images/' . $table);
@@ -88,8 +93,12 @@ class UpdateController extends Controller
             $request->file('personal_photo')->move($destinationPath, $fileName);
             $requestData['personal_photo'] = 'images/' . $table . '/' . $fileName;
         }
-    
-        DB::table($table)->where('id', $id)->update($requestData);
+
+            unset($requestData['password_confirmation']);
+            
+            unset($requestData['user_pass']);
+
+            DB::table($table)->where($column_name, $id)->update($requestData);
     
         return redirect()->back()->with('success', 'Record Updated successfully!');
     }
