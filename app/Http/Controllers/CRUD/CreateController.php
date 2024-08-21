@@ -104,6 +104,7 @@ class CreateController extends Controller
         unset($requestData['_token']);
 
         $record = DB::table($table)->insert($requestData);
+        
         /*
         $lastInsertedId = DB::getPdo()->lastInsertId();
         $data = DB::table($table)->find($lastInsertedId);

@@ -53,7 +53,7 @@ trait UserColumnsTrait
             'sub_branch_id_fk' => ['label' => 'Sub Branch', 'type' => 'select', 'default' => null, 'options' => $branches,'hidden' => false],
             'select_t_employee' => ['label' => 'Select Employee Tasks', 'type' => 'select', 'options' => $tasks, 'default' => 1, 'hidden' => false],
             'user_pass' => ['label' => 'Password', 'type' => 'password', 'default' => null, 'hidden' => false],
-            'password_confirmation' => ['label' => 'Password Confirmation', 'type' => 'password','default' => null, 'hidden' => false],
+            'user_pass_confirmation' => ['label' => 'Password Confirmation', 'type' => 'password','default' => null, 'hidden' => false],
         ];
     }
 }

@@ -60,9 +60,9 @@ class UpdateController extends Controller
     {
         $table = $request->table;
         
-        $column_name = $table =='users' ? 'user_id' : 'user';
+        $column_name = $table =='users' ? 'user_id' : 'id';
 
-        $id =  $table =='users' ? $request->user_id : $request->user_id;
+        $id =  $table =='users' ? $request->user_id : $request->id;
         
         // Ensure $id is valid and exists
         if (is_null($id) || !DB::table($table)->where($column_name, $id)->exists()) {
@@ -80,10 +80,21 @@ class UpdateController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-    
+        
+        
+
         // Proceed with the update logic
         $requestData = $request->except(['_token', 'password_confirmation', 'table']);
         
+
+        if ($request->has('password')) {
+            if($request->password !=''){
+                    $requestData['password'] = Hash::make($requestData['password']);
+            }else{
+                unset($requestData['password']);
+            }
+        }
+
         if ($request->hasFile('personal_photo')) {
             $fileName = time() . '.' . $request->file('personal_photo')->extension();
             $destinationPath = public_path('images/' . $table);
@@ -93,13 +104,40 @@ class UpdateController extends Controller
             $request->file('personal_photo')->move($destinationPath, $fileName);
             $requestData['personal_photo'] = 'images/' . $table . '/' . $fileName;
         }
-
-            unset($requestData['password_confirmation']);
             
-            unset($requestData['user_pass']);
-
             DB::table($table)->where($column_name, $id)->update($requestData);
     
         return redirect()->back()->with('success', 'Record Updated successfully!');
     }
+
+    public function updatePassword(Request $request)
+    {
+        $table=$request->table;
+        $id=$request->user_id;
+
+        $requestData = $request->all();
+        
+        $validator = Validator::make($request->all(), [
+            'user_pass' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+    
+        // Check if the validation fails
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    
+        // Determine the model class based on the table name
+        $modelClass = $this->getModelClass($table);
+
+        // Find the user by the provided ID
+        $user = $modelClass::where('user_id',$id)->first();
+
+        $requestData['user_pass'] = Hash::make($requestData['user_pass']);
+
+        // Update the user's password
+        $user->update($requestData);    
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Password updated successfully!');
     }
+}

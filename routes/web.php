@@ -31,6 +31,10 @@ use App\Http\Controllers\HomeController;
 
   Route::post('update', [App\Http\Controllers\CRUD\UpdateController::class, 'update'])->name('update');
 
+  Route::post('update', [App\Http\Controllers\CRUD\UpdateController::class, 'update'])->name('update');
+
+  Route::post('update-password', [App\Http\Controllers\CRUD\UpdateController::class, 'updatePassword'])->name('updatePassword');
+
   Route::post('delete', [App\Http\Controllers\CRUD\DeleteController::class, 'delete'])->name('delete');
 
 //});

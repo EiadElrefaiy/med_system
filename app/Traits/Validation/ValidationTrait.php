@@ -58,6 +58,10 @@ trait ValidationTrait
             $rules['password'] = ['required', 'string', 'min:8', 'confirmed'];
             $rules['password_confirmation'] = ['required', 'string', 'min:8'];
         }
+        if ($request->has('user_pass')) {
+            $rules['user_pass'] = ['required', 'string', 'min:8', 'confirmed'];
+            $rules['password_confirmation'] = ['required', 'string', 'min:8'];
+        }
     
         if ($request->hasFile('personal_photo')) {
             $rules['personal_photo'] = ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'];
