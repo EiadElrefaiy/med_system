@@ -51,30 +51,39 @@
                 </li>
 
                 <li>
-                    <a href="javascript: void(0);" class="waves-effect">
+                    <a href="{{ route('table.index', ['table' => 'branch_settings', 'view' => 'index.index', 'columns' => json_encode(['id' => 'id', 'title' => 'title' , 'from_id' => 'from_id', 'lat_map' => 'Lat', 'long_map' => 'Long'])]) }}" class="waves-effect">
                         <i class="mdi mdi-source-branch"></i>
                         <span>Branches</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="javascript: void(0);" class="waves-effect">
-                        <i class="mdi mdi-account-multiple"></i>
+                    <a href="{{ route('table.index', [
+                        'table' => 'clients', 
+                        'view' => 'index.index', 
+                        'columns' => json_encode([
+                            'id' => 'id',
+                            'client_code' => 'client_code', 
+                            'name' => 'name', 
+                            'middle_name' => 'middle_name', 
+                            'last_name' => 'last_name', 
+                            'heard_about' => 'heard_about', 
+                            'mob' => 'mob', 
+                            'mob2' => 'mob2', 
+                            'email' => 'email', 
+                            'adress' => 'adress', 
+                            'university' => 'university'
+                        ])
+                    ]) }}" class="waves-effect">
+                           <i class="mdi mdi-account-multiple"></i>
                         <span>Customers</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ route('table.index', ['table' => 'employees', 'view' => 'index.index', 'columns' => json_encode(['id' => 'id', 'personal_photo' => 'profile pic' , 'employee' => 'Name', 'emp_code' => 'Employee Code', 'phone' => 'Mobile' , 'card_num' => 'Card Number' , 'birth_date' => 'Birth Date' , 'adress' => 'Address' , 'employee_type' => 'Status'])]) }}" class="waves-effect">
+                    <a href="javascript: void(0);" class="waves-effect">
                         <i class="mdi mdi-airplay"></i>
                         <span>Projects</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="javascript: void(0);" class="waves-effect">
-                        <i class="mdi mdi-account-multiple"></i>
-                        <span>Clients</span>
                     </a>
                 </li>
 

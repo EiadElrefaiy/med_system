@@ -6,6 +6,7 @@ use App\Models\BranchesSettings;
 use App\Models\Employee;
 use App\Models\Setting;
 use App\Models\User;
+use App\Models\Client;
 
 trait ModelHelperTrait
 {
@@ -21,7 +22,8 @@ trait ModelHelperTrait
             'users' => User::class,
             'settings' => Setting::class,
             'employees' => Employee::class,
-            'sub_branches' => BranchesSettings::class,
+            'branch_settings' => BranchesSettings::class,
+            'clients' => Client::class,
         ];
 
         return $models[$table] ?? null;

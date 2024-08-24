@@ -14,11 +14,13 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use App\Traits\Tables\EmployeeColumnsTrait;
 use App\Traits\Tables\UserColumnsTrait;
+use App\Traits\Tables\ClientsColumnsTrait;
+use App\Traits\Tables\BranchesColumnsTrait;
 use App\Traits\Validation\ValidationTrait;
 
 class CreateController extends Controller
 {
-    use ModelHelperTrait , EmployeeColumnsTrait , UserColumnsTrait , ValidationTrait;
+    use ModelHelperTrait , EmployeeColumnsTrait , UserColumnsTrait , ClientsColumnsTrait , BranchesColumnsTrait, ValidationTrait;
 
     public function add(Request $request)
     {
@@ -32,6 +34,14 @@ class CreateController extends Controller
         
             case 'users':
                 $columns = $this->getUserColumns();
+                break;
+        
+            case 'clients':
+                $columns = $this->getClientsColumns();
+                break;
+
+            case 'branch_settings':
+                $columns = $this->getBranchesColumns();
                 break;
         
             default:

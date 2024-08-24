@@ -13,11 +13,13 @@ use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use App\Traits\Tables\EmployeeColumnsTrait;
 use App\Traits\Tables\UserColumnsTrait;
+use App\Traits\Tables\ClientsColumnsTrait;
 use App\Traits\Validation\ValidationTrait;
+use App\Traits\Tables\BranchesColumnsTrait;
 
 class UpdateController extends Controller
 {
-    use ModelHelperTrait , EmployeeColumnsTrait , UserColumnsTrait , ValidationTrait;
+    use ModelHelperTrait, EmployeeColumnsTrait , UserColumnsTrait , ClientsColumnsTrait , BranchesColumnsTrait, ValidationTrait;
 
     public function edit(Request $request)
     {
@@ -35,7 +37,15 @@ class UpdateController extends Controller
             case 'users':
                 $columns = $this->getUserColumns();
                 break;
-        
+
+            case 'clients':
+                    $columns = $this->getClientsColumns();
+                break;
+
+            case 'branch_settings':
+                  $columns = $this->getBranchesColumns();
+                break;
+    
             default:
                 abort(404, 'Table not found');
         }
